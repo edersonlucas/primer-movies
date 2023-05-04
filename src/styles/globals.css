@@ -25,3 +25,15 @@ body {
 .swiper-pagination-bullet-active {
   @apply bg-white !important;
 }
+
+.pagination-button-selected {
+  @apply rounded border border-primary bg-primary px-3 py-2 font-medium text-white;
+}
+
+.pagination-button-not-selected {
+  @apply rounded border border-gray px-3 py-2;
+}
+
+.pagination-button-next, .pagination-button-prev {
+  @apply rounded border text-[0.75rem] border-primary px-3 py-2 disabled:border-gray disabled:text-gray disabled:opacity-80;
+}
