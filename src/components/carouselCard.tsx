@@ -16,13 +16,13 @@ export default function CarouselCard({ movie }: CarouselCardProps) {
   return (
     <>
       <div className="absolute z-40 flex h-full w-full flex-col items-center justify-center gap-4 p-10 text-center text-white md:ml-44 md:items-start md:p-5 md:text-start">
-        <h3 className="text-xs font-bold md:text-base">Destaque do mês</h3>
+        <h2 className="text-xs font-bold md:text-base">Destaque do mês</h2>
         <Link target="_blank" href="http://github.com/edersonlucas">
-          <h1 className="w-full max-w-xl text-lg font-bold md:text-3xl">
+          <h3 className="w-full max-w-xl text-lg font-bold md:text-3xl">
             {movie.title}
-          </h1>
+          </h3>
         </Link>
-        <div className="flex flex-col items-center gap-3 md:flex-row">
+        <div className="flex flex-col-reverse items-center gap-3 md:flex-row">
           <Rating rating={movie.rating} />
           <p className="text-xs font-semibold md:text-base">{movie.crew}</p>
         </div>
