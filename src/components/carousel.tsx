@@ -18,7 +18,7 @@ interface CarouselProps {
 
 export default function Carousel({ movies }: CarouselProps) {
   return (
-    <section className="flex h-64 w-full justify-center bg-white md:h-[30rem] md:justify-start">
+    <section className="mt-16 flex h-64 w-full justify-center bg-white md:h-[30rem] md:justify-start">
       <Swiper
         modules={[Navigation, Pagination]}
         navigation
