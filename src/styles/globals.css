@@ -5,4 +5,23 @@
 body {
   @apply bg-white;
 }
+
+.swiper-button-next, .swiper-button-prev {
+  @apply text-white mx-0 md:mx-24 !important;
+}
+
+.swiper-button-next::after, .swiper-button-prev::after {
+  @apply text-2xl font-bold !important;
+}
+
+.swiper-slide {
+  @apply w-full min-w-[200px] max-w-[1920px];
+}
+
+.swiper-pagination-bullet {
+  @apply opacity-100 bg-gray !important;
+}
+
+.swiper-pagination-bullet-active {
+  @apply bg-white !important;
 }
