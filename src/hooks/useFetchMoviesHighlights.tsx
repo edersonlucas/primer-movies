@@ -11,6 +11,7 @@ export default function useFetchMoviesHighlights(limit = 3) {
   );
 
   useEffect(() => {
+    setIsLoadingCarousel(true);
     api.get<IFetchMoviesResponse>(`?page=1&limit=${limit}`).then((response) => {
       setIsLoadingCarousel(false);
       setMoviesHighlights(response.data.data);
