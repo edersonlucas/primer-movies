@@ -1,6 +1,4 @@
 import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
 
 import Carousel from 'components/carousel';
 import Footer from 'components/footer';
@@ -10,43 +8,15 @@ import Pagination from 'components/pagination';
 import SkeletonCarousel from 'components/skeletonCarousel';
 import SkeletonMovieCard from 'components/skeletonMovieCard';
 
-import IMovie from 'interfaces/IMovie';
-import IPagination from 'interfaces/IPagination';
-import api from 'services/api';
+import useFetchMovies from 'hooks/useFetchMovies';
+import useFetchMoviesHighlights from 'hooks/useFetchMoviesHighlights';
 
 export default function Page() {
-  const router = useRouter();
-  const [movies, setMovies] = useState<IMovie[] | null>(null);
-  const [isLoadingMovies, setIsLoadingMovies] = useState(true);
-  const [isLoadingCarousel, setIsLoadingCarousel] = useState(true);
-  const [moviesHighlights, setMoviesHighlights] = useState<IMovie[] | null>(
-    null
-  );
-  const [pagination, setPagination] = useState<IPagination | null>(null);
-  const { page } = router.query;
+  const { movies, pagination, isLoadingMovies } = useFetchMovies();
+
+  const { moviesHighlights, isLoadingCarousel } = useFetchMoviesHighlights();
 
   const skeletonCards = Array(18).fill(0);
-
-  useEffect(() => {
-    if (page) {
-      setIsLoadingMovies(true);
-      api
-        .get(`?page=${Number.isInteger(Number(page)) ? page : 1}&limit=18`)
-        .then((response) => {
-          if (response.data.pagination.maxPage < Number(page)) {
-            router.push(`/movies/${response.data.pagination.maxPage}`);
-          }
-          setIsLoadingMovies(false);
-          setMovies(response.data.data as IMovie[]);
-          setPagination(response.data.pagination as IPagination);
-        });
-    }
-
-    api.get('?page=1&limit=3').then((response) => {
-      setIsLoadingCarousel(false);
-      setMoviesHighlights(response.data.data as IMovie[]);
-    });
-  }, [page, router]);
 
   return (
     <>
@@ -62,10 +32,8 @@ export default function Page() {
         <section className="flex flex-col items-center">
           <div className="m-auto flex w-full max-w-[1200px] flex-wrap justify-center gap-5 p-2 md:p-8">
             {isLoadingMovies &&
-              skeletonCards.map((index) => (
-                <SkeletonMovieCard
-                  key={`${index}-skeleton-card-${Math.random() * 1}`}
-                />
+              skeletonCards.map((_item, index) => (
+                <SkeletonMovieCard key={`${index}-skeleton-card`} />
               ))}
             {movies &&
               movies.map((movie) => (
