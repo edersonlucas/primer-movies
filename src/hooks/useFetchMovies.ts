@@ -7,7 +7,7 @@ import IPagination from 'interfaces/IPagination';
 import api from 'services/api';
 
 export default function useFetchMovies(limit = 18) {
-  const [isLoadingMovies, setIsLoadingMovies] = useState(false);
+  const [isLoadingMovies, setIsLoadingMovies] = useState(true);
   const [movies, setMovies] = useState<IMovie[] | null>(null);
   const [pagination, setPagination] = useState<IPagination | null>(null);
   const {

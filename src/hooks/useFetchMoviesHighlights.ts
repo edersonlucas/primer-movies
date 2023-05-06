@@ -5,7 +5,7 @@ import IMovie from 'interfaces/IMovie';
 import api from 'services/api';
 
 export default function useFetchMoviesHighlights(limit = 3) {
-  const [isLoadingCarousel, setIsLoadingCarousel] = useState(false);
+  const [isLoadingCarousel, setIsLoadingCarousel] = useState(true);
   const [moviesHighlights, setMoviesHighlights] = useState<IMovie[] | null>(
     null
   );
