@@ -8,7 +8,7 @@ import { InstagramLogo, TwitterLogo } from 'phosphor-react';
 
 export default function Footer() {
   return (
-    <footer className="h-full w-full bg-primary p-4">
+    <footer className="w-full bg-primary p-4">
       <div className="flex flex-col items-center gap-4 md:mx-10 md:items-start">
         <Link href="/">
           <Image
