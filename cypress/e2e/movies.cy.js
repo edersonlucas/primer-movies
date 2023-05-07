@@ -58,7 +58,7 @@ describe('Movie Page Navigation', () => {
     cy.get('div.swiper-button-prev').should('have.class', 'swiper-button-disabled')
   })
 
-  it('should be possible to navigate between pages by clicking on the next page and previous page button', () => {
+  it('should be possible to navigate between pages by clicking on the next page and previous page button',async () => {
     cy.visit('/movies/1');
     cy.get('button.pagination-button-selected').should('have.text', '1')
     cy.get('button[aria-label="Botão para pagina anterior"]').should('be.disabled')
@@ -68,7 +68,7 @@ describe('Movie Page Navigation', () => {
     cy.get('button.pagination-button-selected').should('have.text', '2')
     cy.get('button[aria-label="Botão para pagina anterior"]').click()
     cy.url().should('include', '/movies/1');
-    cy.get('button.pagination-button-selected').should('have.text', '1')
+    await cy.get('button.pagination-button-selected').should('have.text', '1')
     cy.get('button[aria-label="Botão para pagina anterior"]').should('be.disabled')
   })
 
@@ -76,6 +76,11 @@ describe('Movie Page Navigation', () => {
     cy.visit('/movies/1');
     cy.get('button[aria-label="Botão para a pagina seguinte"]').click()
     cy.contains('h2', 'The Lion King')
+  })
+
+  it('should be 4 paging buttons including next and previous', () => {
+    cy.visit('/movies/1');
+    cy.get('nav[aria-label="Paginação"]').find('button').should('have.length', 4)
   })
 
 });
