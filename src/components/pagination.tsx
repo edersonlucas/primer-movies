@@ -7,10 +7,18 @@ interface PaginationProps {
   pagination: IPagination;
 }
 
-export default function Pagination({ pagination }: PaginationProps) {
-  const [currentPage, setCurrentPage] = useState<number>(pagination.page);
+export default function Pagination({
+  pagination: { page, maxPage }
+}: PaginationProps) {
+  const [currentPage, setCurrentPage] = useState<number>(
+    page > maxPage ? maxPage : page
+  );
 
   const router = useRouter();
+
+  const numberOfPages = Array(maxPage)
+    .fill(0)
+    .map((_item, i) => i + 1);
 
   const handleClick = (page: number) => {
     setCurrentPage(page);
@@ -18,30 +26,30 @@ export default function Pagination({ pagination }: PaginationProps) {
   };
 
   const previousPage = () => {
-    setCurrentPage(pagination.page - 1);
-    router.push(`/movies/${pagination.page - 1}`);
+    setCurrentPage(page - 1);
+    router.push(`/movies/${page - 1}`);
   };
 
   const nextPage = () => {
-    setCurrentPage(pagination.page + 1);
-    router.push(`/movies/${pagination.page + 1}`);
+    setCurrentPage(page + 1);
+    router.push(`/movies/${page + 1}`);
   };
 
   return (
     <nav
       aria-label="Paginação"
-      className="mb-4 mt-4 flex items-center gap-1 text-[0.75rem] text-primary md:mt-0"
+      className="my-4 flex max-w-xs items-center gap-[0.15rem] text-[0.80rem] text-primary md:mt-0"
     >
       <button
         className="pagination-button-prev"
-        disabled={pagination.page === 1}
+        disabled={currentPage === 1}
         aria-label="Botão para pagina anterior"
         onClick={previousPage}
       >
         <svg
           width="11"
-          height="18"
-          viewBox="0 0 11 18"
+          height="20"
+          viewBox="0 0 11 19"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
@@ -54,103 +62,111 @@ export default function Pagination({ pagination }: PaginationProps) {
           />
         </svg>
       </button>
-      {!(pagination.page === 1) && (
-        <button
-          className={`${
-            currentPage === 1
-              ? 'pagination-button-selected'
-              : 'pagination-button-not-selected'
-          }`}
-          onClick={() => handleClick(1)}
-          disabled={currentPage === 1}
-        >
-          1
-        </button>
-      )}
-      {pagination.page > 2 && (
-        <button disabled className="rounded px-3 py-2">
-          ...
-        </button>
-      )}
-      {pagination.page === pagination.maxPage && (
-        <button
-          className={`${
-            currentPage === pagination.page - 1
-              ? 'pagination-button-selected'
-              : 'pagination-button-not-selected'
-          }`}
-          onClick={() => handleClick(pagination.page - 1)}
-          disabled={currentPage === pagination.page - 1}
-        >
-          {pagination.page - 1}
-        </button>
-      )}
-      <button
-        className={`${
-          currentPage === pagination.page
-            ? 'pagination-button-selected'
-            : 'pagination-button-not-selected'
-        }`}
-        onClick={() => handleClick(pagination.page)}
-        disabled={currentPage === pagination.page}
-      >
-        {pagination.page}
-      </button>
 
-      {pagination.page < pagination.maxPage - 1 && (
+      {numberOfPages.length < 6 ? (
+        numberOfPages.map((number) => (
+          <button
+            key={number}
+            className={`${
+              currentPage === number
+                ? 'pagination-button-selected'
+                : 'pagination-button-not-selected'
+            }`}
+            onClick={() => handleClick(number)}
+            disabled={currentPage === number}
+          >
+            {number}
+          </button>
+        ))
+      ) : (
         <>
-          <button
-            className={`${
-              currentPage === pagination.page + 1
-                ? 'pagination-button-selected'
-                : 'pagination-button-not-selected'
-            }`}
-            onClick={() => handleClick(pagination.page + 1)}
-            disabled={currentPage === pagination.page + 1}
-          >
-            {pagination.page + 1}
-          </button>
-          <button disabled className="rounded px-3 py-2">
-            ...
-          </button>
-          <button
-            className={`${
-              currentPage === pagination.maxPage
-                ? 'pagination-button-selected'
-                : 'pagination-button-not-selected'
-            }`}
-            onClick={() => handleClick(pagination.maxPage)}
-            disabled={currentPage === pagination.maxPage}
-          >
-            {pagination.maxPage}
-          </button>
-        </>
-      )}
+          {page !== 1 && (
+            <button
+              className={`${
+                currentPage === 1
+                  ? 'pagination-button-selected'
+                  : 'pagination-button-not-selected'
+              }`}
+              onClick={() => handleClick(1)}
+              disabled={currentPage === 1}
+            >
+              1
+            </button>
+          )}
 
-      {pagination.page === pagination.maxPage - 1 && (
-        <button
-          className={`${
-            currentPage === pagination.maxPage
-              ? 'pagination-button-selected'
-              : 'pagination-button-not-selected'
-          }`}
-          onClick={() => handleClick(pagination.maxPage)}
-          disabled={currentPage === pagination.maxPage}
-        >
-          {pagination.maxPage}
-        </button>
+          {page > 3 && (
+            <button disabled className="rounded px-1 py-2">
+              ...
+            </button>
+          )}
+
+          {page > maxPage - 2
+            ? numberOfPages.slice(page - 3, page + 1).map((number) => (
+                <button
+                  key={number}
+                  className={`${
+                    currentPage === number
+                      ? 'pagination-button-selected'
+                      : 'pagination-button-not-selected'
+                  }`}
+                  onClick={() => handleClick(number)}
+                  disabled={currentPage === number}
+                >
+                  {number}
+                </button>
+              ))
+            : numberOfPages
+                .slice(
+                  page > 2 ? page - 2 : page - 1,
+                  page > 2 ? page + 1 : page + 2
+                )
+                .map((number) => (
+                  <button
+                    key={number}
+                    className={`${
+                      currentPage === number
+                        ? 'pagination-button-selected'
+                        : 'pagination-button-not-selected'
+                    }`}
+                    onClick={() => handleClick(number)}
+                    disabled={currentPage === number}
+                  >
+                    {number}
+                  </button>
+                ))}
+
+          {page < maxPage - 2 && (
+            <button disabled className="rounded px-1 py-2">
+              ...
+            </button>
+          )}
+
+          {page < maxPage - 1 && (
+            <button
+              className={`${
+                currentPage === maxPage
+                  ? 'pagination-button-selected'
+                  : 'pagination-button-not-selected'
+              }`}
+              onClick={() => handleClick(maxPage)}
+              disabled={currentPage === maxPage}
+            >
+              {maxPage}
+            </button>
+          )}
+        </>
       )}
 
       <button
         className="pagination-button-next"
-        disabled={pagination.page === pagination.maxPage}
+        disabled={page === maxPage}
         onClick={nextPage}
         aria-label="Botão para a pagina seguinte"
       >
         <svg
           width="11"
-          height="18"
-          viewBox="0 0 11 18"
+          height="20"
+          viewBox="0 0 11 19"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >

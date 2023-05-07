@@ -31,9 +31,9 @@ body {
 }
 
 .pagination-button-not-selected {
-  @apply rounded border border-gray px-3 py-2;
+  @apply rounded border border-gray px-3 py-2 font-medium hover:bg-secondary hover:text-white;
 }
 
 .pagination-button-next, .pagination-button-prev {
-  @apply rounded border text-[0.75rem] border-primary px-3 py-2 disabled:border-gray disabled:text-gray disabled:opacity-80;
+  @apply rounded border text-[0.75rem] border-primary px-3 py-2 disabled:border-gray disabled:text-gray disabled:opacity-80 enabled:hover:bg-secondary enabled:hover:text-white;
 }
