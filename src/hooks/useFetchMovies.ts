@@ -18,22 +18,22 @@ export default function useFetchMovies(limit = 18) {
   useEffect(() => {
     if (page) {
       setIsLoadingMovies(true);
-      api
-        .get<IFetchMoviesResponse>(
-          `?page=${
-            Number.isInteger(Number(page)) ? Number(page) : 1
-          }&limit=${limit}`
-        )
-        .then((response) => {
-          if (response.data.pagination.maxPage < Number(page)) {
-            push(`/movies/${response.data.pagination.maxPage}`);
-          } else if (Number(page) <= 0) {
-            push('/movies/1');
-          }
-          setIsLoadingMovies(false);
-          setMovies(response.data.data);
-          setPagination(response.data.pagination);
-        });
+      if (!Number.isInteger(Number(page))) {
+        push('/movies/1');
+      } else if (Number(page) <= 0) {
+        push('/movies/1');
+      } else {
+        api
+          .get<IFetchMoviesResponse>(`?page=${Number(page)}&limit=${limit}`)
+          .then((response) => {
+            if (response.data.pagination.maxPage < Number(page)) {
+              push(`/movies/${response.data.pagination.maxPage}`);
+            }
+            setIsLoadingMovies(false);
+            setMovies(response.data.data);
+            setPagination(response.data.pagination);
+          });
+      }
     }
   }, [page, limit, push]);
 
