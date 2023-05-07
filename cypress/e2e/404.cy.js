@@ -15,7 +15,7 @@ describe('404 Page Navigation', () => {
     cy.intercept('GET', `${Cypress.env('api_server')}/?page=1&limit=18`, { fixture: 'moviesPage1.json' })
     cy.intercept('GET', `${Cypress.env('api_server')}/?page=1&limit=3`, { fixture: 'moviesHighlights.json' })
     cy.visit('/ronaldo', {failOnStatusCode: false});
-    cy.contains('a', 'VÁ PARA A PÁGINA DE FILMES').click()
+    cy.contains('a', 'VÁ PARA A PÁGINA DE FILMES').should('be.visible').click();
     cy.url().should('include', '/movies/1');
   });
 })
