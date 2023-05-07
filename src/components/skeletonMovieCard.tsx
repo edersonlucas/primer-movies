@@ -3,6 +3,7 @@ import ContentLoader from 'react-content-loader';
 export default function SkeletonMovieCard() {
   return (
     <ContentLoader
+      data-testid="skeleton-movie-card"
       speed={2}
       width={168}
       height={290}

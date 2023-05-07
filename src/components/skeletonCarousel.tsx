@@ -2,7 +2,10 @@ import ContentLoader from 'react-content-loader';
 
 export default function SkeletonCarousel() {
   return (
-    <section className="mt-16 flex h-64 w-full justify-center bg-white md:h-[30rem] md:justify-start">
+    <section
+      data-testid="skeleton-carousel"
+      className="mt-16 flex h-64 w-full justify-center bg-white md:h-[30rem] md:justify-start"
+    >
       <ContentLoader
         speed={2}
         width={1280}
