@@ -37,14 +37,7 @@ export default function Page() {
               ))}
             {movies &&
               movies.map((movie) => (
-                <MovieCard
-                  key={movie.title}
-                  title={movie.title}
-                  rating={movie.rating}
-                  year={movie.year}
-                  image_url={movie.image_url}
-                  crew={movie.crew}
-                />
+                <MovieCard key={movie.title} movie={movie} />
               ))}
           </div>
           {movies && pagination && <Pagination pagination={pagination} />}

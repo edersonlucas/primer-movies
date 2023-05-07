@@ -5,15 +5,11 @@ import Rating from './rating';
 
 import IMovie from 'interfaces/IMovie';
 
-type MovieCardProps = IMovie;
+interface MovieCardProps {
+  movie: IMovie;
+}
 
-export default function MovieCard({
-  title,
-  image_url,
-  rating,
-  year,
-  crew
-}: MovieCardProps) {
+export default function MovieCard({ movie }: MovieCardProps) {
   return (
     <Link
       target="_blank"
@@ -25,18 +21,18 @@ export default function MovieCard({
         priority={true}
         width={150}
         height={300}
-        src={image_url}
-        alt={`Imagem da capa do filme ${title}`}
+        src={movie.image_url}
+        alt={`Imagem da capa do filme ${movie.title}`}
       />
       <div className="mt-2 flex flex-col gap-2">
-        <h2 className="text-sm font-bold">{title}</h2>
+        <h2 className="text-sm font-bold">{movie.title}</h2>
         <h3 className="text-[0.69rem] font-medium">
-          Ano de lançamento: {year}
+          Ano de lançamento: {movie.year}
         </h3>
-        <p className="text-[0.69rem] text-xs">{crew}</p>
+        <p className="text-[0.69rem] text-xs">{movie.crew}</p>
       </div>
       <div className="mt-2 text-white">
-        <Rating rating={rating} />
+        <Rating rating={movie.rating} />
       </div>
     </Link>
   );
