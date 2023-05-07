@@ -3,13 +3,10 @@ import Link from 'next/link';
 
 import Rating from './rating';
 
+import IMovie from 'interfaces/IMovie';
+
 interface CarouselCardProps {
-  movie: {
-    title: string;
-    image_url: string;
-    rating: string;
-    crew: string;
-  };
+  movie: Omit<IMovie, 'year'>;
 }
 
 export default function CarouselCard({ movie }: CarouselCardProps) {

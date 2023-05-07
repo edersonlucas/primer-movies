@@ -1,5 +1,6 @@
 import CarouselCard from './carouselCard';
 
+import IMovie from 'interfaces/IMovie';
 import { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
@@ -8,12 +9,7 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 interface CarouselProps {
-  movies: Array<{
-    title: string;
-    image_url: string;
-    rating: string;
-    crew: string;
-  }>;
+  movies: Omit<IMovie, 'year'>[];
 }
 
 export default function Carousel({ movies }: CarouselProps) {
