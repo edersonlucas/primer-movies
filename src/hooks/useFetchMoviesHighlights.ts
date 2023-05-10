@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 
 import IFetchMoviesResponse from 'interfaces/IFetchMoviesResponse';
@@ -10,13 +11,27 @@ export default function useFetchMoviesHighlights(limit = 3) {
     null
   );
 
+  const { isReady } = useRouter();
+
   useEffect(() => {
+    const fetchMovies = async () => {
+      try {
+        const response = await api.get<IFetchMoviesResponse>(
+          `?page=1&limit=${limit}`
+        );
+        setMoviesHighlights(response.data.data);
+        setIsLoadingCarousel(false);
+      } catch (_err) {
+        setIsLoadingCarousel(true);
+      }
+    };
+
     setIsLoadingCarousel(true);
-    api.get<IFetchMoviesResponse>(`?page=1&limit=${limit}`).then((response) => {
-      setIsLoadingCarousel(false);
-      setMoviesHighlights(response.data.data);
-    });
-  }, [limit]);
+
+    if (isReady) {
+      fetchMovies();
+    }
+  }, [limit, isReady]);
 
   return { isLoadingCarousel, moviesHighlights };
 }

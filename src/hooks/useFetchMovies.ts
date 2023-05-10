@@ -12,29 +12,36 @@ export default function useFetchMovies(limit = 18) {
   const [pagination, setPagination] = useState<IPagination | null>(null);
   const {
     push,
-    query: { page }
+    query: { page },
+    isReady
   } = useRouter();
 
   useEffect(() => {
-    if (page) {
-      setIsLoadingMovies(true);
+    const fetchMovies = async () => {
+      try {
+        const response = await api.get<IFetchMoviesResponse>(
+          `?page=${Number(page)}&limit=${limit}`
+        );
+        if (response.data.pagination.maxPage < Number(page)) {
+          push(`/movies/${response.data.pagination.maxPage}`);
+        } else {
+          setMovies(response.data.data);
+          setPagination(response.data.pagination);
+          setIsLoadingMovies(false);
+        }
+      } catch (_err) {
+        setIsLoadingMovies(true);
+      }
+    };
+
+    setIsLoadingMovies(true);
+    if (isReady) {
       if (!Number.isInteger(Number(page)) || Number(page) <= 0) {
         push('/movies/1');
-      } else {
-        api
-          .get<IFetchMoviesResponse>(`?page=${Number(page)}&limit=${limit}`)
-          .then((response) => {
-            if (response.data.pagination.maxPage < Number(page)) {
-              push(`/movies/${response.data.pagination.maxPage}`);
-            } else {
-              setIsLoadingMovies(false);
-              setMovies(response.data.data);
-              setPagination(response.data.pagination);
-            }
-          });
       }
+      fetchMovies();
     }
-  }, [page, limit, push]);
+  }, [isReady, page, limit, push]);
 
   return { movies, pagination, isLoadingMovies };
 }
